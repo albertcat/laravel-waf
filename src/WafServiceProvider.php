@@ -10,6 +10,7 @@ class WafServiceProvider extends PackageServiceProvider
     public function configurePackage(Package $package): void
     {
         $package
-            ->name('laravel-waf');
+            ->name('laravel-waf')
+            ->hasMigration('create_waf_bans_table');
     }
 }
