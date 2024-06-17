@@ -43,7 +43,7 @@ test('same ip with multiple bans, last ban takes precedence', function () {
     expect(Waf::ipHasBan($last->ip_address))->toBeTrue();
 });
 
-it('bans an ip for a period of time', function() {
+it('bans an ip for a period of time', function () {
     Waf::banIpUntil('1.1.1.1', Carbon::tomorrow());
 
     expect(Waf::ipHasBan('1.1.1.1'))->toBeTrue();
