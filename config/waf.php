@@ -6,6 +6,6 @@ return [
 
         \Albert\Waf\Filters\ResourceEnumerationFilter::class,
 
-    ]
+    ],
 
 ];
