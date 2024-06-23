@@ -1,6 +1,11 @@
 <?php
 
-// config for Albert/Waf
 return [
+
+    'filters' => [
+
+        \Albert\Waf\Filters\ResourceEnumerationFilter::class,
+
+    ]
 
 ];

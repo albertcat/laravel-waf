@@ -16,12 +16,8 @@ class WafMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Check if IP is banned
-        abort_if(Waf::ipHasBan($request->ip()), 400);
+        abort_unless(Waf::requestIsAllowed($request), 400);
 
-        // TODO: Run waf checks
-
-        // All is good
         return $next($request);
     }
 }

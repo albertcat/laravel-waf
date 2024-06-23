@@ -25,6 +25,13 @@ This is the contents of the published config file:
 
 ```php
 return [
+
+    'filters' => [
+    
+        \Albert\Waf\Filters\ResourceEnumerationFilter::class,
+
+    ]
+
 ];
 ```
 
@@ -53,6 +60,28 @@ use Albert\Waf\Facades\Waf;
 use Illuminate\Support\Carbon;
 
 Waf::banIpUntil('1.1.1.1', Carbon::tomorrow());
+```
+
+## Filters
+
+Laravel Waf comes with a preset of filters to apply on the incomming request. All enabled filters are defined on the config file.
+You can create new filters that validates the incomming request. It is a simple class that needs to implement the ValidatesReques interface:
+
+```php
+<?php
+
+namespace App\Waf\Filters;
+
+use Albert\Waf\Contracts\ValidatesRequest;
+use Illuminate\Http\Request;
+
+class DenyAllRequestsFilter implements ValidatesRequest
+{
+    public function requestIsValid(Request $request): bool
+    {
+        return false;
+    }
+}
 ```
 
 ## Testing

@@ -2,8 +2,11 @@
 
 namespace Albert\Waf;
 
+use Albert\Waf\Contracts\ValidatesRequest;
 use Albert\Waf\Models\Ban;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
 
 class Waf
 {
@@ -26,5 +29,29 @@ class Waf
         }
 
         return $ban->banned_until->gt(Carbon::now());
+    }
+
+    public function requestIsAllowed(Request $request): bool
+    {
+        if ($this->ipHasBan($request->ip())) {
+            return false;
+        }
+
+        foreach ($this->getFilters() as $filter) {
+            if (! ($filter = new $filter) instanceof ValidatesRequest) {
+                continue;
+            }
+
+            if (! $filter->requestIsValid($request)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected function getFilters()
+    {
+        return Config::get('waf.filters', []);
     }
 }
